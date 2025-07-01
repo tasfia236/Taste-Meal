@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addFavorite, removeFavorite } from '../data/meals/mealSlice'
 import { toast } from 'react-toastify'
+import { FaHeart, FaRegHeart } from 'react-icons/fa'
 
 const MealCard = ({ meal }) => {
   const dispatch = useDispatch()
@@ -27,16 +28,16 @@ const MealCard = ({ meal }) => {
       />
 
       <div className='p-4'>
-        <h3 className='font-semibold text-lg'>{meal.strMeal}</h3>
+        <h3 className='font-semibold text-orange-500 text-lg'>{meal.strMeal}</h3>
         <p className='text-gray-500 text-sm'>
           {meal.strArea} | {meal.strCategory}
         </p>
         <button
           onClick={toggleFavorite}
-          className='top-2 right-2 absolute text-red-500 text-xl'
+          className='top-2 right-2 absolute text-orange-500 text-xl'
           title='Bookmark'
         >
-          {isFavorite ? '❤️' : '🤍'}
+          {isFavorite ? <FaHeart /> : <FaRegHeart />}
         </button>
       </div>
     </div>

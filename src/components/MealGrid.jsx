@@ -1,3 +1,4 @@
+import { FaArrowCircleLeft, FaArrowCircleRight } from 'react-icons/fa'
 import MealCard from './MealCard'
 import { useState } from 'react'
 
@@ -18,7 +19,7 @@ const MealGrid = ({ meals }) => {
   return (
     <div className='p-4 w-full'>
       {/* Meal Cards */}
-      <div className='gap-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-4 pb-10'>
+      <div className='gap-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-4 pb-10'>
         {currentMeals.map(meal => (
           <MealCard key={meal.idMeal} meal={meal} />
         ))}
@@ -30,9 +31,9 @@ const MealGrid = ({ meals }) => {
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className='bg-gray-200 hover:bg-gray-300 disabled:opacity-50 px-3 py-1 rounded'
+            className='flex justify-center items-center gap-1 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 px-3 py-1 rounded'
           >
-            ⬅ Prev
+            <FaArrowCircleLeft /> Prev
           </button>
 
           {[...Array(totalPages)].map((_, i) => (
@@ -51,9 +52,9 @@ const MealGrid = ({ meals }) => {
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className='bg-gray-200 hover:bg-gray-300 disabled:opacity-50 px-3 py-1 rounded'
+            className='flex justify-center items-center gap-1 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 px-3 py-1 rounded'
           >
-            Next ➡
+            Next <FaArrowCircleRight />
           </button>
         </div>
       )}
