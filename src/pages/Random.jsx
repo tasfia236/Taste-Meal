@@ -14,7 +14,7 @@ const Random = () => {
 
   return (
     <div className='bg-white shadow mx-auto p-4 md:p-6 rounded w-full max-w-4xl'>
-      <h2 className='flex justify-center items-center gap-2 mb-4 font-bold text-orange-600 text-xl md:text-2xl text-center'>
+      <h2 className='flex justify-center items-center gap-2 mb-6 font-bold text-[#7c1d1d] text-xl md:text-2xl text-center ext-2xl'>
         <FaDice />
         Random Meal
       </h2>
@@ -44,7 +44,7 @@ const Random = () => {
               href={meal.strYoutube}
               target='_blank'
               rel='noreferrer'
-              className='inline-block bg-orange-400 hover:bg-orange-600 mt-2 px-4 py-2 rounded text-white transition'
+              className='inline-block bg-[#7c1d1d] hover:bg-yellow-500 mt-2 px-4 py-2 rounded text-white transition'
             >
               Watch Recipe Video
             </a>

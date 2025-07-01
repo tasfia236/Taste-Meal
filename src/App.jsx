@@ -10,16 +10,19 @@ import HeroSlider from './components/HeroSlider'
 const App = () => {
   return (
     <Router>
-      <div className="flex flex-col bg-gray-50 min-h-screen">
-        <HeroSlider />
-        <Header />
+      <div className='flex flex-col bg-gray-50 min-h-screen'>
         <Navbar />
-        <main className="flex-grow mx-auto px-4 py-6 w-full max-w-7xl">
+        <main className='flex-grow mx-auto w-full max-w-full'>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/random" element={<Random />} />
-            <Route path="/favorite" element={<Favorites />} />
-            <Route path="*" element={<p className="text-red-500 text-center">404 - Not Found</p>} />
+            <Route path='/' element={<Home />} />
+            <Route path='/random' element={<Random />} />
+            <Route path='/favorite' element={<Favorites />} />
+            <Route
+              path='*'
+              element={
+                <p className='text-red-500 text-center'>404 - Not Found</p>
+              }
+            />
           </Routes>
         </main>
         <Footer />

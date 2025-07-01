@@ -1,45 +1,35 @@
-import { useState } from 'react'
+// ✅ FilterPanel.jsx
+import { useEffect, useState } from 'react'
+import { FaKitchenSet, FaFilter } from 'react-icons/fa6'
 import { useDispatch } from 'react-redux'
 import { fetchFilteredMeals } from '../data/meals/mealSlice'
-import { FaFilter, FaKitchenSet } from 'react-icons/fa6'
 
-// You can expand this list based on your app's supported categories/ingredients
-const categories = [
-  'All',
-  'Vegan',
-  'Vegetarian',
-  'Seafood',
-  'Beef',
-  'Chicken',
-  'Dessert'
-]
-const ingredients = [
-  'Onion',
-  'Tomato',
-  'Garlic',
-  'Chicken',
-  'Beef',
-  'Rice',
-  'Cheese',
-  'Mushroom',
-  'Milk',
-  'Lemon'
-]
-
-export default function FilterPanel () {
-  const [selectedCategory, setSelectedCategory] = useState('All')
-  const [selectedIngredients, setSelectedIngredients] = useState([])
+const FilterPanel = () => {
   const dispatch = useDispatch()
+  const [ingredients, setIngredients] = useState([])
+  const [categories, setCategories] = useState([])
+  const [selectedIngredients, setSelectedIngredients] = useState([])
+  const [selectedCategory, setSelectedCategory] = useState('')
 
-  const toggleIngredient = ingredient => {
+  useEffect(() => {
+    fetch('https://www.themealdb.com/api/json/v1/1/list.php?i=list')
+      .then(res => res.json())
+      .then(data =>
+        setIngredients(data.meals.map(i => i.strIngredient).slice(0, 15))
+      )
+
+    fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list')
+      .then(res => res.json())
+      .then(data => setCategories(data.meals.map(c => c.strCategory)))
+  }, [])
+
+  const toggleIngredient = ing => {
     setSelectedIngredients(prev =>
-      prev.includes(ingredient)
-        ? prev.filter(ing => ing !== ingredient)
-        : [...prev, ingredient]
+      prev.includes(ing) ? prev.filter(i => i !== ing) : [...prev, ing]
     )
   }
 
-  const handleFilter = () => {
+  const applyFilter = () => {
     dispatch(
       fetchFilteredMeals({
         ingredients: selectedIngredients,
@@ -49,60 +39,44 @@ export default function FilterPanel () {
   }
 
   return (
-    <div className='bg-gray-100 shadow mx-auto mb-6 p-4 rounded-md max-w-5xl'>
-      <h3 className='flex justify-center items-center gap-2 mb-4 font-semibold text-xl text-center'>
-        <FaKitchenSet /> Advanced Meal Filters
+    <div className='bg-gray-50 shadow mx-auto mb-8 p-4 rounded-lg max-w-5xl'>
+      <h3 className='mb-2 font-semibold text-[#7c1d1d] text-lg text-center'>
+        Advanced Filter
       </h3>
-
-      {/* Ingredient Filter */}
-      <div className='mb-4'>
-        <label className='block mb-1 font-medium text-gray-700 text-center'>
-          Select Ingredients:
-        </label>
-        <div className='flex justify-center gap-2 py-2 overflow-x-auto whitespace-nowrap scrollbar-hide'>
-          {ingredients.map(ing => (
-            <button
-              key={ing}
-              onClick={() => toggleIngredient(ing)}
-              className={`px-3 py-1 rounded-full border text-sm min-w-fit transition ${
-                selectedIngredients.includes(ing)
-                  ? 'bg-red-500 text-white border-red-600'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
-              }`}
-            >
-              {ing}
-            </button>
-          ))}
-        </div>
+      <div className='flex flex-wrap justify-center items-center content-center gap-2 py-2'>
+        {ingredients.map(ing => (
+          <button
+            key={ing}
+            onClick={() => toggleIngredient(ing)}
+            className={`px-3 py-1 rounded-full border ${
+              selectedIngredients.includes(ing)
+                ? 'bg-yellow-400 text-black'
+                : 'bg-white text-gray-700'
+            }`}
+          >
+            {ing}
+          </button>
+        ))}
       </div>
-
-      {/* Category Filter */}
-      <div className='flex justify-center items-center gap-3 mb-4'>
-        <label className='content-center font-medium text-gray-700'>
-          Dietary Category:
-        </label>
+      <div className='flex items-center gap-3 mt-4'>
+        <label className='font-medium'>Category:</label>
         <select
           value={selectedCategory}
           onChange={e => setSelectedCategory(e.target.value)}
-          className='px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500'
+          className='p-2 border rounded focus:ring-yellow-400'
         >
           {categories.map(cat => (
             <option key={cat}>{cat}</option>
           ))}
         </select>
-      </div>
-
-      {/* Apply Filter Button */}
-      <div className='text-center'>
         <button
-          onClick={handleFilter}
-          className='bg-red-500 hover:bg-red-700 shadow px-6 py-2 rounded text-white transition'
+          onClick={applyFilter}
+          className='bg-[#7c1d1d] hover:bg-yellow-500 shadow ml-auto px-4 py-2 rounded-full text-white'
         >
-          <p className='flex justify-center items-center gap-2'>
-            <FaFilter /> Apply Filter
-          </p>
+          Apply Filter
         </button>
       </div>
     </div>
   )
 }
+export default FilterPanel

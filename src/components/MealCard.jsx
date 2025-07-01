@@ -20,26 +20,50 @@ const MealCard = ({ meal }) => {
   }
 
   return (
-    <div className='relative bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden hover:scale-105 transition hover:-translate-y-1 duration-300 transform'>
-      <img
-        src={meal.strMealThumb}
-        alt={meal.strMeal}
-        className='hover:brightness-90 w-full h-48 object-cover transition'
-      />
+    <div className='group relative bg-white shadow-md hover:shadow-2xl rounded-2xl overflow-hidden transition-all animate-fade-in-up duration-300'>
+      {/* Image Block */}
+      <div className='relative h-56 overflow-hidden'>
+        <img
+          src={meal.strMealThumb}
+          alt={meal.strMeal}
+          className='w-full h-full object-cover group-hover:scale-105 transition duration-500 transform'
+        />
 
-      <div className='p-4'>
-        <h3 className='font-semibold text-orange-500 text-lg'>{meal.strMeal}</h3>
-        <p className='text-gray-500 text-sm'>
-          {meal.strArea} | {meal.strCategory}
-        </p>
+        {/* Overlay */}
+        <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent'></div>
+
+        {/* Favorite Button */}
         <button
           onClick={toggleFavorite}
-          className='top-2 right-2 absolute text-orange-500 text-xl'
-          title='Bookmark'
+          className='top-3 right-3 absolute bg-black/50 hover:bg-red-500 p-2 rounded-full text-white text-xl transition'
+          title='Toggle Favorite'
         >
-          {isFavorite ? <FaHeart /> : <FaRegHeart />}
+          {isFavorite ? (
+            <FaHeart className='text-yellow-400' />
+          ) : (
+            <FaRegHeart className='text-white' />
+          )}
         </button>
       </div>
+      <a
+        href={`https://www.themealdb.com/meal/${meal.idMeal}`}
+        target='_blank'
+        rel='noopener noreferrer'
+      >
+        {/* Info Block */}
+        <div className='space-y-3 p-5'>
+          <h3 className='font-bold text-[#531b1b] text-xl line-clamp-1'>
+            {meal.strMeal}
+          </h3>
+
+          <div className='flex justify-between items-center text-gray-600 text-sm'>
+            <span className='bg-gradient-to-r from-yellow-300 to-orange-300 px-2 py-1 rounded-full font-medium text-black text-xs'>
+              {meal.strCategory}
+            </span>
+            <span className='italic'>{meal.strArea}</span>
+          </div>
+        </div>
+      </a>
     </div>
   )
 }

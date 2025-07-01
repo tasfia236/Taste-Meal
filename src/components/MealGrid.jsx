@@ -5,7 +5,7 @@ import { useState } from 'react'
 const MealGrid = ({ meals }) => {
   const [currentPage, setCurrentPage] = useState(1)
 
-  const mealsPerPage = 6
+  const mealsPerPage = 8
   const totalPages = Math.ceil(meals.length / mealsPerPage)
 
   const indexOfLast = currentPage * mealsPerPage
@@ -17,9 +17,11 @@ const MealGrid = ({ meals }) => {
   }
 
   return (
-    <div className='p-4 w-full'>
-      {/* Meal Cards */}
-      <div className='gap-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-4 pb-10'>
+    <div className='mx-auto px-4 py-6 max-w-7xl'>
+      <div
+        id='explore'
+        className='gap-6 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-4'
+      >
         {currentMeals.map(meal => (
           <MealCard key={meal.idMeal} meal={meal} />
         ))}
@@ -42,7 +44,7 @@ const MealGrid = ({ meals }) => {
               onClick={() => handlePageChange(i + 1)}
               className={`px-3 py-1 rounded ${
                 currentPage === i + 1
-                  ? 'bg-orange-500 text-white'
+                  ? 'bg-red-800 text-white'
                   : 'bg-gray-200 hover:bg-gray-300'
               }`}
             >

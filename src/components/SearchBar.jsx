@@ -13,17 +13,22 @@ const SearchBar = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className='flex justify-center gap-1'>
+    <form
+      onSubmit={handleSubmit}
+      className='flex justify-center gap-4 mt-6 mb-10'
+    >
       <input
         type='text'
-        placeholder='Search meals...'
-        className='px-4 py-2 border border-gray-300 rounded-l-md w-64'
         value={search}
         onChange={e => setSearch(e.target.value)}
+        placeholder='Search your favorite dish...'
+        className='shadow-md px-5 py-3 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-red-400 w-full max-w-md'
       />
-      <button className='flex justify-between items-center gap-2 bg-red-500 hover:bg-red-700 shadow px-4 py-2 rounded text-white transition-transform'>
-        <FaSearch className='text-white' />
-        Search
+      <button
+        type='submit'
+        className='flex items-center gap-2 bg-[#7c1d1d] hover:bg-red-700 shadow px-6 py-3 rounded-full font-semibold text-white transition'
+      >
+        <FaSearch /> Search
       </button>
     </form>
   )
