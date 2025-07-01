@@ -1,8 +1,8 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addFavorite, removeFavorite } from '../data/meals/mealSlice'
 import { toast } from 'react-toastify'
 import { FaHeart, FaRegHeart } from 'react-icons/fa'
+import { addFavorite, removeFavorite } from '../../slice/meals/mealSlice'
 
 const MealCard = ({ meal }) => {
   const dispatch = useDispatch()
@@ -35,11 +35,11 @@ const MealCard = ({ meal }) => {
         {/* Favorite Button */}
         <button
           onClick={toggleFavorite}
-          className='top-3 right-3 absolute bg-black/50 hover:bg-red-500 p-2 rounded-full text-white text-xl transition'
+          className='top-3 right-3 absolute bg-black/50 hover:bg-red-200 p-2 rounded-full text-white text-xl transition'
           title='Toggle Favorite'
         >
           {isFavorite ? (
-            <FaHeart className='text-yellow-400' />
+            <FaHeart className='text-red-600' />
           ) : (
             <FaRegHeart className='text-white' />
           )}
@@ -52,7 +52,7 @@ const MealCard = ({ meal }) => {
       >
         {/* Info Block */}
         <div className='space-y-3 p-5'>
-          <h3 className='font-bold text-[#531b1b] text-xl line-clamp-1'>
+          <h3 className='font-bold text-red-900 text-xl line-clamp-1'>
             {meal.strMeal}
           </h3>
 

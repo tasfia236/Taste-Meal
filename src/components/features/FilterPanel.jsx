@@ -1,27 +1,21 @@
-// ✅ FilterPanel.jsx
 import { useEffect, useState } from 'react'
-import { FaKitchenSet, FaFilter } from 'react-icons/fa6'
-import { useDispatch } from 'react-redux'
-import { fetchFilteredMeals } from '../data/meals/mealSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  fetchCategories,
+  fetchFilteredMeals,
+  fetchIngredients
+} from '../../slice/meals/mealSlice'
 
 const FilterPanel = () => {
   const dispatch = useDispatch()
-  const [ingredients, setIngredients] = useState([])
-  const [categories, setCategories] = useState([])
+  const { ingredients, categories } = useSelector(state => state.meals)
   const [selectedIngredients, setSelectedIngredients] = useState([])
   const [selectedCategory, setSelectedCategory] = useState('')
 
   useEffect(() => {
-    fetch('https://www.themealdb.com/api/json/v1/1/list.php?i=list')
-      .then(res => res.json())
-      .then(data =>
-        setIngredients(data.meals.map(i => i.strIngredient).slice(0, 15))
-      )
-
-    fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list')
-      .then(res => res.json())
-      .then(data => setCategories(data.meals.map(c => c.strCategory)))
-  }, [])
+    dispatch(fetchIngredients())
+    dispatch(fetchCategories())
+  }, [dispatch])
 
   const toggleIngredient = ing => {
     setSelectedIngredients(prev =>
@@ -43,7 +37,7 @@ const FilterPanel = () => {
       <h3 className='mb-2 font-semibold text-[#7c1d1d] text-lg text-center'>
         Advanced Filter
       </h3>
-      <div className='flex flex-wrap justify-center items-center content-center gap-2 py-2'>
+      <div className='flex flex-wrap justify-center items-center gap-2 py-2'>
         {ingredients.map(ing => (
           <button
             key={ing}
@@ -65,6 +59,7 @@ const FilterPanel = () => {
           onChange={e => setSelectedCategory(e.target.value)}
           className='p-2 border rounded focus:ring-yellow-400'
         >
+          <option value=''>All</option>
           {categories.map(cat => (
             <option key={cat}>{cat}</option>
           ))}
@@ -79,4 +74,5 @@ const FilterPanel = () => {
     </div>
   )
 }
+
 export default FilterPanel

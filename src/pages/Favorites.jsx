@@ -1,7 +1,7 @@
 // src/pages/Favorites.jsx
 import { useSelector } from 'react-redux'
-import MealGrid from '../components/MealGrid'
 import { FaHeart } from 'react-icons/fa'
+import MealGrid from '../components/meals/MealGrid'
 
 export default function Favorites () {
   const favorites = useSelector(state => state.meals.favorites)

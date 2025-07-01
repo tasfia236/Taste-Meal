@@ -4,7 +4,7 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchHeroMeals } from '../data/meals/mealSlice'
+import { fetchHeroMeals } from '../../slice/meals/mealSlice'
 
 export default function HeroSlider () {
   const dispatch = useDispatch()
@@ -49,11 +49,11 @@ export default function HeroSlider () {
                     {meal.strMeal}
                   </h2>
                   <p className='mb-6 text-neutral-200 text-lg md:text-xl'>
-                    A classic
+                    A classic{' '}
                     <span className='font-semibold text-amber-300'>
                       {meal.strCategory}
-                    </span>
-                    dish from <span className='underline'>{meal.strArea}</span>
+                    </span>{' '}
+                    dish from <span className='underline'>{meal.strArea}</span>{' '}
                     refined and flavorful.
                   </p>
                   <div>
@@ -69,7 +69,7 @@ export default function HeroSlider () {
                       href={meal.strYoutube}
                       target='_blank'
                       rel='noopener noreferrer'
-                      className='inline-block bg-gradient-to-r from-red-900 to-red-800 hover:shadow-[0_0_15px_rgba(234,179,8,0.5)] px-6 py-3 rounded-full font-semibold text-black text-white text-sm uppercase tracking-widest transition duration-300'
+                      className='inline-block bg-gradient-to-r from-red-900 to-red-800 hover:shadow-[0_0_15px_rgba(234,179,8,0.5)] px-6 py-3 rounded-full font-semibold text-white text-sm uppercase tracking-widest transition duration-300'
                     >
                       Watch Video
                     </a>

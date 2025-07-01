@@ -1,13 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import SearchBar from '../components/SearchBar'
-import FilterPanel from '../components/FilterPanel'
-import FeaturedSlider from '../components/FeaturedSlider'
-import MealGrid from '../components/MealGrid'
-import { MdErrorOutline } from 'react-icons/md'
-import { fetchMealsBySearch } from '../data/meals/mealSlice'
-import Hero from '../components/Hero'
-import HeroSlider from '../components/HeroSlider'
+import { fetchMealsBySearch } from '../slice/meals/mealSlice'
+import HeroSlider from '../components/features/HeroSlider'
+import SearchBar from '../components/features/SearchBar'
+import FilterPanel from '../components/features/FilterPanel'
+import FeaturedSlider from '../components/features/FeaturedSlider'
+import MealGrid from '../components/meals/MealGrid'
 
 export default function Home () {
   const { meals, status, error } = useSelector(state => state.meals)

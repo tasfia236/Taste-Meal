@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchRandomMeal } from '../data/meals/mealSlice'
-import MealCard from '../components/MealCard'
+import { fetchRandomMeal } from '../slice/meals/mealSlice'
 import { FaDice } from 'react-icons/fa'
 
 const Random = () => {

@@ -1,11 +1,9 @@
-import Header from './components/Header'
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Random from './pages/Random'
 import Favorites from './pages/Favorites'
-import HeroSlider from './components/HeroSlider'
+import Navbar from './components/layout/Navbar'
+import Footer from './components/layout/Footer'
 
 const App = () => {
   return (

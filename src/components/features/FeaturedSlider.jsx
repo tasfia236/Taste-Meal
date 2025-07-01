@@ -3,9 +3,8 @@ import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-
-import MealCard from './MealCard'
 import { FaKitchenSet } from 'react-icons/fa6'
+import MealCard from '../meals/MealCard'
 
 export default function FeaturedSlider ({ meals }) {
   return (   <div className="mx-auto mb-10 px-4 max-w-7xl">
