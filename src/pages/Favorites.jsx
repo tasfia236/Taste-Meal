@@ -9,7 +9,7 @@ export default function Favorites () {
   return (
     <div className='p-4 text-center'>
       <h2 className='flex justify-center items-center gap-2 mb-6 font-bold text-[#7c1d1d] text-2xl'>
-      <FaHeart />  Your Favorite Meals
+        <FaHeart /> Your Favorite Meals
       </h2>
       {favorites.length > 0 ? (
         <MealGrid meals={favorites} />

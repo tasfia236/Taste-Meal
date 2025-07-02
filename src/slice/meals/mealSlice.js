@@ -187,4 +187,4 @@ const mealSlice = createSlice({
 })
 
 export const { addFavorite, removeFavorite } = mealSlice.actions
-export default mealSlice.reducer
+export default mealSlice.reducer;

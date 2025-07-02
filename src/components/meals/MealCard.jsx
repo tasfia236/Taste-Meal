@@ -6,8 +6,8 @@ import { addFavorite, removeFavorite } from '../../slice/meals/mealSlice'
 
 const MealCard = ({ meal }) => {
   const dispatch = useDispatch()
-  const { favorites } = useSelector(state => state.meals)
-  const isFavorite = favorites.find(m => m.idMeal === meal.idMeal)
+  const { favorites } = useSelector((state) => state.meals)
+  const isFavorite = favorites.find((m) => m.idMeal === meal.idMeal)
 
   const toggleFavorite = () => {
     if (isFavorite) {
@@ -20,47 +20,35 @@ const MealCard = ({ meal }) => {
   }
 
   return (
-    <div className='group relative bg-white shadow-md hover:shadow-2xl rounded-2xl overflow-hidden transition-all animate-fade-in-up duration-300'>
-      {/* Image Block */}
-      <div className='relative h-56 overflow-hidden'>
+    <div className="group relative bg-white/80 shadow-md hover:shadow-xl rounded-2xl overflow-hidden transition-all duration-300">
+      <div className="relative h-56 overflow-hidden">
         <img
           src={meal.strMealThumb}
           alt={meal.strMeal}
-          className='w-full h-full object-cover group-hover:scale-105 transition duration-500 transform'
+          className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-sky-900/60 via-transparent to-transparent"></div>
 
-        {/* Overlay */}
-        <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent'></div>
-
-        {/* Favorite Button */}
         <button
           onClick={toggleFavorite}
-          className='top-3 right-3 absolute bg-black/50 hover:bg-red-200 p-2 rounded-full text-white text-xl transition'
-          title='Toggle Favorite'
+          className="top-3 right-3 absolute bg-white/70 hover:bg-cyan-200 p-2 rounded-full transition"
         >
-          {isFavorite ? (
-            <FaHeart className='text-red-600' />
-          ) : (
-            <FaRegHeart className='text-white' />
-          )}
+          {isFavorite ? <FaHeart className="text-red-500" /> : <FaRegHeart className="text-sky-800" />}
         </button>
       </div>
+
       <a
         href={`https://www.themealdb.com/meal/${meal.idMeal}`}
-        target='_blank'
-        rel='noopener noreferrer'
+        target="_blank"
+        rel="noopener noreferrer"
       >
-        {/* Info Block */}
-        <div className='space-y-3 p-5'>
-          <h3 className='font-bold text-red-900 text-xl line-clamp-1'>
-            {meal.strMeal}
-          </h3>
-
-          <div className='flex justify-between items-center text-gray-600 text-sm'>
-            <span className='bg-gradient-to-r from-yellow-300 to-orange-300 px-2 py-1 rounded-full font-medium text-black text-xs'>
+        <div className="p-4">
+          <h3 className="font-bold text-sky-900 text-lg line-clamp-1">{meal.strMeal}</h3>
+          <div className="flex justify-between mt-1 text-gray-600 text-sm">
+            <span className="bg-cyan-100 px-2 py-0.5 rounded-full font-semibold text-xs">
               {meal.strCategory}
             </span>
-            <span className='italic'>{meal.strArea}</span>
+            <span className="italic">{meal.strArea}</span>
           </div>
         </div>
       </a>

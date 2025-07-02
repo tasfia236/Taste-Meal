@@ -1,61 +1,67 @@
-import { FaDice, FaHome, FaHeart, FaBars, FaTimes } from 'react-icons/fa';
-import { FaKitchenSet } from 'react-icons/fa6';
-import { useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { FaHome, FaDice, FaHeart, FaBars, FaTimes } from 'react-icons/fa'
+import { FaKitchenSet } from 'react-icons/fa6'
+import { useState } from 'react'
+import { NavLink, Link } from 'react-router-dom'
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const linkClass = (isActive) =>
     isActive
-      ? 'text-yellow-300 font-bold flex items-center gap-1'
-      : 'text-gray-100 hover:text-yellow-500 flex items-center gap-1';
+      ? 'text-cyan-400 font-bold flex items-center gap-2 transition'
+      : 'text-white hover:text-cyan-300 flex items-center gap-2 transition'
 
   return (
-    <nav className="top-0 z-50 sticky bg-[#7c1d1d] shadow-lg text-white">
+    <nav className="top-0 z-50 sticky bg-sky-900 shadow-md">
       <div className="flex justify-between items-center mx-auto px-4 py-4 max-w-7xl">
+        {/* Logo */}
         <Link
           to="/"
-          className="flex items-center gap-2 font-extrabold text-yellow-300 hover:text-white text-3xl italic tracking-wide transition"
+          className="flex items-center gap-2 font-extrabold text-cyan-300 text-2xl italic tracking-wider hover:scale-105 transition-transform"
         >
-          <FaKitchenSet /> TasteMeal
+          <FaKitchenSet />
+          TasteMeal
         </Link>
 
-        {/* Desktop Links */}
-        <div className="hidden md:flex space-x-6 font-semibold text-base">
+        {/* Desktop Menu */}
+        <div className="hidden md:flex space-x-6 font-medium">
           <NavLink to="/" className={({ isActive }) => linkClass(isActive)}>
-            <FaHome /> Home
+            <FaHome />
+            Home
           </NavLink>
           <NavLink to="/random" className={({ isActive }) => linkClass(isActive)}>
-            <FaDice /> Random
+            <FaDice />
+            Random
           </NavLink>
           <NavLink to="/favorite" className={({ isActive }) => linkClass(isActive)}>
-            <FaHeart /> Favorites
+            <FaHeart />
+            Favorites
           </NavLink>
         </div>
 
-        {/* Mobile Menu Icon */}
-        <div className="md:hidden">
-          <button onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
-          </button>
-        </div>
+        {/* Mobile Menu Button */}
+        <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-white">
+          {menuOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
+        </button>
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Dropdown Menu */}
       {menuOpen && (
-        <div className="md:hidden space-y-3 bg-[#6e1818] px-6 pb-4 font-medium text-sm">
+        <div className="md:hidden space-y-4 bg-sky-800 px-6 pt-2 pb-6 rounded-b-lg text-white text-base">
           <NavLink to="/" onClick={() => setMenuOpen(false)} className={({ isActive }) => linkClass(isActive)}>
-            <FaHome /> Home
+            <FaHome />
+            Home
           </NavLink>
           <NavLink to="/random" onClick={() => setMenuOpen(false)} className={({ isActive }) => linkClass(isActive)}>
-            <FaDice /> Random
+            <FaDice />
+            Random
           </NavLink>
           <NavLink to="/favorite" onClick={() => setMenuOpen(false)} className={({ isActive }) => linkClass(isActive)}>
-            <FaHeart /> Favorites
+            <FaHeart />
+            Favorites
           </NavLink>
         </div>
       )}
     </nav>
-  );
+  )
 }
