@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { fetchMealsBySearch } from '../slice/meals/mealSlice'
-import HeroSlider from '../components/features/HeroSlider'
 import SearchBar from '../components/features/SearchBar'
 import FeaturedSlider from '../components/features/FeaturedSlider'
 import MealGrid from '../components/meals/MealGrid'
