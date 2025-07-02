@@ -17,11 +17,12 @@ import {
 } from 'react-icons/fa'
 import { LuBeef } from 'react-icons/lu'
 import { GiChickenOven, GiGoat, GiNoodles } from 'react-icons/gi'
-import { SiFoodpanda, SiLamborghini } from 'react-icons/si'
+import { SiLamborghini } from 'react-icons/si'
 import { IoFastFood } from 'react-icons/io5'
 import { BiDrink } from 'react-icons/bi'
 import { CiWheat } from 'react-icons/ci'
 import { MdOutlineFreeBreakfast } from 'react-icons/md'
+import { FaBowlFood } from 'react-icons/fa6'
 
 const iconMap = {
   Beef: <LuBeef />,
@@ -32,7 +33,7 @@ const iconMap = {
   Vegetarian: <FaLeaf />,
   Lamb: <SiLamborghini />,
   Pasta: <GiNoodles />,
-  Pork: <SiFoodpanda />,
+  Pork: <FaBowlFood />,
   Miscellaneous: <IoFastFood />,
   Starter: <BiDrink />,
   Vegan: <CiWheat />,
