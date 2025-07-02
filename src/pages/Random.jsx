@@ -1,57 +1,65 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchRandomMeal } from '../slice/meals/mealSlice'
-import { FaDice } from 'react-icons/fa'
+import { FaDice, FaSearch } from 'react-icons/fa'
 
-const Random = () => {
+export default function RandomMeal () {
   const dispatch = useDispatch()
   const { meal, status } = useSelector(state => state.meals)
-  console.log(meal)
+
   useEffect(() => {
     dispatch(fetchRandomMeal(''))
   }, [dispatch])
 
   return (
-    <div className='bg-white shadow mx-auto p-4 md:p-6 rounded w-full max-w-4xl'>
-      <h2 className='flex justify-center items-center gap-2 mb-6 font-bold text-[#7c1d1d] text-xl md:text-2xl text-center ext-2xl'>
-        <FaDice />
-        Random Meal
-      </h2>
+    <div className='bg-gradient-to-br from-sky-50 via-white to-sky-100 px-4 md:px-8 py-10 min-h-screen'>
+      <div className='bg-white/50 shadow-xl backdrop-blur-md mx-auto p-8 border border-sky-100 rounded-2xl max-w-5xl animate-fade-in-up'>
+        <h2 className='flex justify-center items-center gap-3 mb-6 font-bold text-sky-800 text-3xl'>
+          <FaDice className='text-cyan-600 text-2xl animate-bounce' />
+          Random Meal Surprise
+        </h2>
 
-      {status === 'loading' && (
-        <p className='text-gray-600 text-center'>Loading random meal...</p>
-      )}
+        {status === 'loading' && (
+          <p className='text-cyan-600 text-center animate-pulse'>
+            Fetching something tasty...
+          </p>
+        )}
 
-      {meal && (
-        <div className='flex md:flex-row flex-col gap-6'>
-          <img
-            src={meal.strMealThumb}
-            alt={meal.strMeal}
-            className='shadow rounded-lg w-full md:w-1/2'
-          />
-          <div className='flex-1'>
-            <h3 className='mb-2 font-semibold text-lg'>{meal.strMeal}</h3>
-            <p className='mb-2 text-gray-600 text-sm'>
-              <strong>Category:</strong> {meal.strCategory} <br />
-              <strong>Area:</strong> {meal.strArea}
-            </p>
-            <p className='mb-3 text-gray-800 text-sm'>
-              <strong>Instructions:</strong>{' '}
-              {meal.strInstructions?.slice(0, 250)}...
-            </p>
-            <a
-              href={meal.strYoutube}
-              target='_blank'
-              rel='noreferrer'
-              className='inline-block bg-[#7c1d1d] hover:bg-yellow-500 mt-2 px-4 py-2 rounded text-white transition'
-            >
-              Watch Recipe Video
-            </a>
+        {meal && (
+          <div className='flex md:flex-row flex-col gap-8'>
+            <img
+              src={meal.strMealThumb}
+              alt={meal.strMeal}
+              className='shadow-lg rounded-xl w-full md:w-1/2 h-auto hover:scale-[1.02] transition-transform'
+            />
+
+            <div className='flex-1 space-y-4'>
+              <h3 className='pt-6 font-bold text-[#1d677c] text-2xl'>
+                {meal.strMeal}
+              </h3>
+              <p className='text-gray-600 text-sm'>
+                <strong className='text-sky-900'>Category:</strong>{' '}
+                {meal.strCategory} <br />
+                <strong className='text-sky-900'>Area:</strong> {meal.strArea}
+              </p>
+              <p className='text-gray-700 text-sm leading-relaxed'>
+                <strong className='text-sky-800'>Instructions:</strong>{' '}
+                {meal.strInstructions?.slice(0, 280)}...
+              </p>
+              <a
+                href={meal.strYoutube}
+                target='_blank'
+                rel='noreferrer'
+                className='inline-block bg-gradient-to-r from-cyan-600 hover:from-cyan-700 to-sky-500 hover:to-sky-600 shadow-md mt-2 px-6 py-2 rounded-full font-semibold text-white transition-all'
+              >
+               <div className='flex justify-center items-center gap-2'>
+                 <FaSearch /> Watch Recipe Video
+               </div>
+              </a>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }
-
-export default Random

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { FaHeart, FaRegHeart } from 'react-icons/fa'
 import { addFavorite, removeFavorite } from '../../slice/meals/mealSlice'
+import { Link } from 'react-router-dom'
 
 const MealCard = ({ meal }) => {
   const dispatch = useDispatch()
@@ -20,44 +21,37 @@ const MealCard = ({ meal }) => {
   }
 
   return (
-    <div className='group relative bg-white/80 shadow-md hover:shadow-xl rounded-2xl overflow-hidden transition-all duration-300'>
-      <div className='relative h-56 overflow-hidden'>
-        <img
-          src={meal.strMealThumb}
-          alt={meal.strMeal}
-          className='w-full h-full object-cover group-hover:scale-105 transition duration-500'
-        />
-        <div className='absolute inset-0 bg-gradient-to-t from-sky-900/60 via-transparent to-transparent'></div>
+    <div className='group relative bg-white/60 shadow-md hover:shadow-xl backdrop-blur rounded-2xl overflow-hidden transition'>
+      <img
+        src={meal.strMealThumb}
+        alt={meal.strMeal}
+        className='w-full h-56 object-cover group-hover:scale-105 transition-transform'
+      />
 
-        <button
-          onClick={toggleFavorite}
-          className='top-3 right-3 absolute bg-white/70 hover:bg-cyan-200 p-2 rounded-full transition'
-        >
-          {isFavorite ? (
-            <FaHeart className='text-red-500' />
-          ) : (
-            <FaRegHeart className='text-sky-800' />
-          )}
-        </button>
-      </div>
-
-      <a
-        href={`https://www.themealdb.com/meal/${meal.idMeal}`}
-        target='_blank'
-        rel='noopener noreferrer'
+      <button
+        onClick={toggleFavorite}
+        className='top-3 right-3 absolute bg-white/80 hover:bg-red-100 shadow-md p-2 rounded-full'
       >
-        <div className='p-4'>
-          <h3 className='font-bold text-sky-900 text-lg line-clamp-1'>
+        {isFavorite ? (
+          <FaHeart className='text-red-500' />
+        ) : (
+          <FaRegHeart className='text-gray-500' />
+        )}
+      </button>
+
+    <Link to={`/meal/${meal.idMeal}`}>
+        <div className='space-y-2 p-4'>
+          <h3 className='font-semibold text-sky-900 text-lg truncate'>
             {meal.strMeal}
           </h3>
-          <div className='flex justify-between mt-1 text-gray-600 text-sm'>
-            <span className='bg-cyan-100 px-2 py-0.5 rounded-full font-semibold text-xs'>
+          <div className='flex justify-between text-gray-600 text-xs'>
+            <span className='bg-cyan-200 px-2 py-0.5 rounded-full text-cyan-900'>
               {meal.strCategory}
             </span>
             <span className='italic'>{meal.strArea}</span>
           </div>
         </div>
-      </a>
+      </Link>
     </div>
   )
 }

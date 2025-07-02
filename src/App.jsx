@@ -4,6 +4,7 @@ import Random from './pages/Random'
 import Favorites from './pages/Favorites'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
+import MealDetails from './components/meals/MealDetails'
 
 const App = () => {
   return (
@@ -14,6 +15,8 @@ const App = () => {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/random' element={<Random />} />
+
+            <Route path='/meal/:id' element={<MealDetails />} />
             <Route path='/favorite' element={<Favorites />} />
             <Route
               path='*'

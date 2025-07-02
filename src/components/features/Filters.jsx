@@ -7,7 +7,39 @@ import {
   fetchByIngredients,
   clearFilter
 } from '../../slice/meals/mealSlice'
-import { FaKitchenSet } from 'react-icons/fa6'
+
+import {
+  FaUtensils,
+  FaFish,
+  FaCookie,
+  FaLeaf,
+  FaBreadSlice
+} from 'react-icons/fa'
+import { LuBeef } from 'react-icons/lu'
+import { GiChickenOven, GiGoat, GiNoodles } from 'react-icons/gi'
+import { SiFoodpanda, SiLamborghini } from 'react-icons/si'
+import { IoFastFood } from 'react-icons/io5'
+import { BiDrink } from 'react-icons/bi'
+import { CiWheat } from 'react-icons/ci'
+import { MdOutlineFreeBreakfast } from 'react-icons/md'
+
+const iconMap = {
+  Beef: <LuBeef />,
+  Goat: <GiGoat />,
+  Chicken: <GiChickenOven />,
+  Seafood: <FaFish />,
+  Dessert: <FaCookie />,
+  Vegetarian: <FaLeaf />,
+  Lamb: <SiLamborghini />,
+  Pasta: <GiNoodles />,
+  Pork: <SiFoodpanda />,
+  Miscellaneous: <IoFastFood />,
+  Starter: <BiDrink />,
+  Vegan: <CiWheat />,
+  Side: <MdOutlineFreeBreakfast />,
+  Breakfast: <FaBreadSlice />,
+  Default: <FaUtensils />
+}
 
 export default function Filters () {
   const dispatch = useDispatch()
@@ -15,14 +47,14 @@ export default function Filters () {
 
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedIngredients, setSelectedIngredients] = useState([])
+  const [showIngredients, setShowIngredients] = useState(false)
 
   useEffect(() => {
     dispatch(fetchCategories())
     dispatch(fetchIngredients())
   }, [dispatch])
 
-  const handleCategoryChange = e => {
-    const category = e.target.value
+  const handleCategoryChange = category => {
     setSelectedCategory(category)
     category ? dispatch(fetchByCategory(category)) : dispatch(clearFilter())
   }
@@ -44,67 +76,78 @@ export default function Filters () {
   }
 
   return (
-    <div className='bg-white/40 shadow-xl backdrop-blur-md mb-14 p-8 border border-sky-100 rounded-2xl transition-all animate-fade-in-up duration-500'>
-      {/* 🔰 Title */}
-      <h3 className='flex items-center gap-3 mb-6 font-bold text-sky-900 text-2xl tracking-wide'>
-        <FaKitchenSet className='text-cyan-500 text-2xl' />
-        Advanced Meal Filters
-      </h3>
-
-      {/* Category Dropdown */}
-      <div className='mb-8'>
-        <label className='block mb-2 font-medium text-sky-800 text-sm'>
-          Select Category:
-        </label>
-        <select
-          value={selectedCategory}
-          onChange={handleCategoryChange}
-          className='bg-white shadow-sm p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 w-full transition'
-        >
-          <option value=''>-- All Categories --</option>
+    <div className='bg-gradient-to-br from-[#f0f9ff] to-[#ffffff] shadow-xl mb-14 p-6 md:p-8 rounded-3xl transition-all'>
+      {/* Category */}
+      <div className='mb-6 text-center'>
+        <h3 className='mb-4 font-bold text-cyan-800 text-2xl'>
+          Our Specials Menu
+        </h3>
+        <div className='flex flex-wrap justify-center gap-4'>
+          <button
+            onClick={() => handleCategoryChange('')}
+            className={`flex flex-col items-center px-3 py-2 rounded-md ${
+              selectedCategory === ''
+                ? 'text-red-600 border-b-2 border-red-600'
+                : 'text-gray-500 hover:text-red-500'
+            }`}
+          >
+            <FaUtensils className='mb-1 text-xl' />
+            All
+          </button>
           {categories.map((cat, idx) => (
-            <option key={idx} value={cat}>
-              {cat}
-            </option>
+            <button
+              key={idx}
+              onClick={() => handleCategoryChange(cat)}
+              className={`flex flex-col items-center px-3 py-2 rounded-md ${
+                selectedCategory === cat
+                  ? 'text-red-600 border-b-2 border-red-600'
+                  : 'text-gray-500 hover:text-red-500'
+              }`}
+            >
+              {iconMap[cat] || iconMap.Default}
+              <span className='mt-1 text-sm'>{cat}</span>
+            </button>
           ))}
-        </select>
-      </div>
-
-      {/* Ingredients */}
-      <div className='mb-8'>
-        <label className='block mb-3 font-medium text-sky-800 text-sm'>
-          Choose Ingredients:
-        </label>
-        <div className='flex flex-wrap gap-3 pr-2 max-h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-cyan-300 scrollbar-track-white/30'>
-          {ingredients.slice(0, 50).map(
-            (ingredient, idx) =>
-              ingredient && (
-                <button
-                  key={idx}
-                  onClick={() => handleIngredientToggle(ingredient)}
-                  className={`px-4 py-1.5 rounded-full text-sm font-semibold transition border ${
-                    selectedIngredients.includes(ingredient)
-                      ? 'bg-cyan-500 text-white border-cyan-600 shadow-md'
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-cyan-100 hover:text-sky-800'
-                  }`}
-                >
-                  {ingredient}
-                </button>
-              )
-          )}
         </div>
-        <p className='mt-2 text-gray-500 text-xs'>
-          (Showing first 50 ingredients)
-        </p>
       </div>
 
-      {/* Clear Filter Button */}
-      <div className='mt-4 text-right'>
+      {/* Ingredient Filter */}
+      <div className='mb-6'>
+        <div className='flex justify-between items-center mb-3'>
+          <h4 className='font-semibold text-md text-sky-700'>Ingredients</h4>
+          <button
+            onClick={() => setShowIngredients(!showIngredients)}
+            className='text-cyan-600 text-sm hover:underline'
+          >
+            {showIngredients ? 'Hide' : 'Show'} Ingredients
+          </button>
+        </div>
+
+        {showIngredients && (
+          <div className='flex flex-wrap gap-2 max-h-40 overflow-y-auto transition-all scrollbar-thin scrollbar-thumb-cyan-300 scrollbar-track-white/30'>
+            {ingredients.slice(0, 30).map((ingredient, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleIngredientToggle(ingredient)}
+                className={`px-4 py-1.5 rounded-full text-sm font-semibold border transition ${
+                  selectedIngredients.includes(ingredient)
+                    ? 'bg-cyan-600 text-white border-cyan-600'
+                    : 'bg-white text-gray-600 border-gray-300 hover:bg-cyan-100 hover:text-sky-800'
+                }`}
+              >
+                {ingredient}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className='mt-6 text-right'>
         <button
           onClick={handleClear}
-          className='bg-gradient-to-r from-cyan-600 hover:from-cyan-700 to-sky-500 hover:to-sky-600 shadow px-6 py-2 rounded-full font-semibold text-white transition-all duration-300'
+          className='bg-gradient-to-r from-cyan-600 hover:from-cyan-700 to-sky-500 hover:to-sky-600 shadow px-6 py-2 rounded-full font-semibold text-white transition-all'
         >
-        Clear Filters
+          Clear Filters
         </button>
       </div>
     </div>

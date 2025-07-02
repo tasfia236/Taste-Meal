@@ -8,6 +8,7 @@ import MealGrid from '../components/meals/MealGrid'
 import Hero from '../components/features/Hero'
 import AboutSection from '../components/features/AboutSection'
 import Filters from '../components/features/Filters'
+import { FaKitchenSet } from 'react-icons/fa6'
 
 export default function Home () {
   const { meals, status, error } = useSelector(state => state.meals)
@@ -17,7 +18,7 @@ export default function Home () {
   }, [dispatch])
 
   return (
-    <div className=''>
+    <div className='bg-gradient-to-br from-sky-50 via-white to-sky-100 min-h-screen text-gray-800'>
       {/* Hero Section */}
       <Hero />
       <AboutSection />
@@ -42,6 +43,16 @@ export default function Home () {
 
       {/* Meals Grid */}
       <section>
+        {/* Heading */}
+        <div className='my-2 text-center'>
+          <h2 className='flex justify-center items-center gap-2 font-extrabold text-sky-900 text-3xl md:text-4xl'>
+            <FaKitchenSet className='text-cyan-900' />
+            Meals
+          </h2>
+          <p className='mt-2 text-sky-800 text-base'>
+            Explore our all meals this week
+          </p>
+        </div>
         {status === 'loading' && (
           <p className='font-medium text-gray-600 text-lg text-center'>
             Loading...

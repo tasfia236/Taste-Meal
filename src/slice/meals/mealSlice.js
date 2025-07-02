@@ -85,7 +85,7 @@ export const fetchByCategory = createAsyncThunk(
   }
 )
 
-// Filter by ingredient (multiple support)
+// Filter by ingredient (multiple)
 export const fetchByIngredients = createAsyncThunk(
   'meals/fetchByIngredients',
   async selectedIngredients => {
@@ -133,6 +133,10 @@ const mealSlice = createSlice({
     removeFavorite: (state, action) => {
       state.favorites = state.favorites.filter(m => m.idMeal !== action.payload)
       localStorage.setItem('favorites', JSON.stringify(state.favorites))
+    },
+    clearFavorites: state => {
+      state.favorites = []
+      localStorage.removeItem('favorites')
     },
     clearFilter: state => {
       state.filteredMeals = []
@@ -202,5 +206,5 @@ const mealSlice = createSlice({
   }
 })
 
-export const { addFavorite, removeFavorite, clearFilter } = mealSlice.actions
+export const { addFavorite, removeFavorite, clearFavorites, clearFilter } = mealSlice.actions
 export default mealSlice.reducer
