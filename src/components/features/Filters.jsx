@@ -126,7 +126,7 @@ export default function Filters () {
 
         {showIngredients && (
           <div className='flex flex-wrap gap-2 max-h-40 overflow-y-auto transition-all scrollbar-thin scrollbar-thumb-cyan-300 scrollbar-track-white/30'>
-            {ingredients.slice(0, 30).map((ingredient, idx) => (
+            {ingredients.slice(0, 50).map((ingredient, idx) => (
               <button
                 key={idx}
                 onClick={() => handleIngredientToggle(ingredient)}
