@@ -3,11 +3,11 @@ import { useEffect } from 'react'
 import { fetchMealsBySearch } from '../slice/meals/mealSlice'
 import HeroSlider from '../components/features/HeroSlider'
 import SearchBar from '../components/features/SearchBar'
-import FilterPanel from '../components/features/FilterPanel'
 import FeaturedSlider from '../components/features/FeaturedSlider'
 import MealGrid from '../components/meals/MealGrid'
 import Hero from '../components/features/Hero'
 import AboutSection from '../components/features/AboutSection'
+import Filters from '../components/features/Filters'
 
 export default function Home () {
   const { meals, status, error } = useSelector(state => state.meals)
@@ -22,13 +22,12 @@ export default function Home () {
       <Hero />
       <AboutSection />
 
-            {/* Featured Meals */}
+      {/* Featured Meals */}
       {meals.length > 0 && (
         <section className='mb-10'>
           <FeaturedSlider meals={meals.slice(0, 8)} />
         </section>
       )}
-
 
       {/* <div className='mx-auto px-4 py-6 max-w-7xl'> */}
       {/* Search */}
@@ -38,7 +37,7 @@ export default function Home () {
 
       {/* Filter */}
       <section className='mb-8'>
-        <FilterPanel />
+        <Filters />
       </section>
 
       {/* Meals Grid */}

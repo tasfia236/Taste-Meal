@@ -8,7 +8,6 @@ const initialState = {
   heroMeals: [],
   categories: [],
   ingredients: [],
-  ingredientFiltered: [],
   filteredMeals: [],
   status: 'idle',
   error: null
@@ -50,63 +49,71 @@ export const fetchHeroMeals = createAsyncThunk(
   }
 )
 
-// Fetch ingredients
-export const fetchIngredients = createAsyncThunk(
-  'meals/fetchIngredients',
-  async () => {
-    const res = await axios.get('https://www.themealdb.com/api/json/v1/1/list.php?i=list')
-    return res.data.meals.map(i => i.strIngredient).slice(0, 15)
-  }
-)
-
-// Fetch all categories (used as dietary options too)
+// all categories
 export const fetchCategories = createAsyncThunk(
   'meals/fetchCategories',
   async () => {
-    const res = await axios.get('https://www.themealdb.com/api/json/v1/1/list.php?c=list')
-    return res.data.meals.map(c => c.strCategory)
+    const res = await axios.get(
+      `https://www.themealdb.com/api/json/v1/1/list.php?c=list`
+    )
+    console.log('Categories:', res)
+    return res.data.meals.map(m => m.strCategory)
   }
 )
 
-// Filter meals
-export const fetchFilteredMeals = createAsyncThunk(
-  'meals/fetchFilteredMeals',
-  async ({ ingredients, category }) => {
-    let meals = []
+// all ingredients
+export const fetchIngredients = createAsyncThunk(
+  'meals/fetchIngredients',
+  async () => {
+    const res = await axios.get(
+      `https://www.themealdb.com/api/json/v1/1/list.php?i=list`
+    )
+    console.log('Ingredients:', res)
+    return res.data.meals.map(m => m.strIngredient)
+  }
+)
 
-    if (category) {
-      const res = await axios.get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`)
-      meals = res.data.meals || []
-    } else {
-      const randoms = await Promise.all(
-        Array.from({ length: 5 }).map(() =>
-          axios.get('https://www.themealdb.com/api/json/v1/1/random.php')
-        )
+//  Filter by category
+export const fetchByCategory = createAsyncThunk(
+  'meals/fetchByCategory',
+  async category => {
+    const res = await axios.get(
+      `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`
+    )
+    console.log('By Categories:', res)
+    return res.data.meals || []
+  }
+)
+
+// Filter by ingredient (multiple support)
+export const fetchByIngredients = createAsyncThunk(
+  'meals/fetchByIngredients',
+  async selectedIngredients => {
+    // Fetch meals for each ingredient and find common ids
+    const requests = selectedIngredients.map(ingredient =>
+      axios.get(
+        `https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`
       )
-      meals = randoms.map(r => r.data.meals[0])
-    }
+    )
+    const responses = await Promise.all(requests)
+    const mealsList = responses.map(res => res.data.meals || [])
+    console.log('By MealsList:', mealsList)
 
-    // Filter by ingredients (client-side)
-    if (ingredients?.length) {
-      const fullDetails = await Promise.all(
-        meals.slice(0, 15).map(meal =>
-          axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`)
-        )
-      )
+    // Intersect meals by idMeal
+    const commonMeals = mealsList.reduce((acc, meals) => {
+      const ids = meals.map(m => m.idMeal)
+      return acc.filter(id => ids.includes(id))
+    }, mealsList[0]?.map(m => m.idMeal) || [])
+    console.log('CommonMeals:', commonMeals)
 
-      meals = fullDetails
-        .map(res => res.data.meals[0])
-        .filter(meal => {
-          const mealIngredients = Array.from({ length: 20 }, (_, i) =>
-            meal[`strIngredient${i + 1}`]?.toLowerCase()
-          )
-          return ingredients.every(ing =>
-            mealIngredients.includes(ing.toLowerCase())
-          )
-        })
-    }
+    // Fetch full details using idMeal
+    const detailRequests = commonMeals.map(id =>
+      axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
+    )
+    const detailedResponses = await Promise.all(detailRequests)
+    const detailedMeals = detailedResponses.map(res => res.data.meals[0])
 
-    return meals
+    return detailedMeals
   }
 )
 
@@ -126,6 +133,9 @@ const mealSlice = createSlice({
     removeFavorite: (state, action) => {
       state.favorites = state.favorites.filter(m => m.idMeal !== action.payload)
       localStorage.setItem('favorites', JSON.stringify(state.favorites))
+    },
+    clearFilter: state => {
+      state.filteredMeals = []
     }
   },
   extraReducers: builder => {
@@ -166,25 +176,31 @@ const mealSlice = createSlice({
         state.status = 'failed'
         state.error = action.error.message
       })
-  .addCase(fetchIngredients.fulfilled, (state, action) => {
-    state.ingredients = action.payload
-  })
-  .addCase(fetchCategories.fulfilled, (state, action) => {
-    state.categories = action.payload
-  })
-  .addCase(fetchFilteredMeals.pending, state => {
-    state.status = 'loading'
-  })
-  .addCase(fetchFilteredMeals.fulfilled, (state, action) => {
-    state.meals = action.payload
-    state.status = 'succeeded'
-  })
-  .addCase(fetchFilteredMeals.rejected, (state, action) => {
-    state.status = 'failed'
-    state.error = action.error.message
-  })
+
+      // Category
+      .addCase(fetchCategories.pending, state => {
+        state.loading = true
+      })
+      .addCase(fetchCategories.fulfilled, (state, action) => {
+        state.categories = action.payload || []
+      })
+      .addCase(fetchCategories.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
+      })
+
+      //Ingredients
+      .addCase(fetchIngredients.fulfilled, (state, action) => {
+        state.ingredients = action.payload || []
+      })
+      .addCase(fetchByCategory.fulfilled, (state, action) => {
+        state.filteredMeals = action.payload || []
+      })
+      .addCase(fetchByIngredients.fulfilled, (state, action) => {
+        state.filteredMeals = action.payload || []
+      })
   }
 })
 
-export const { addFavorite, removeFavorite } = mealSlice.actions
-export default mealSlice.reducer;
+export const { addFavorite, removeFavorite, clearFilter } = mealSlice.actions
+export default mealSlice.reducer

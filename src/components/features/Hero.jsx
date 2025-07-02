@@ -70,7 +70,7 @@ export default function Hero () {
                       href={meal.strYoutube}
                       target='_blank'
                       rel='noreferrer'
-                      className='bg-cyan-600 hover:bg-cyan-700 px-5 py-2 rounded-full text-white transition'
+                      className='bg-cyan-600 hover:bg-cyan-700 hover:shadow-white px-5 py-2 rounded-full text-white hover:scale-105 transition'
                     >
                       Watch Video
                     </a>

@@ -1,21 +1,10 @@
-import { FaArrowCircleLeft, FaArrowCircleRight } from 'react-icons/fa'
-import MealCard from './MealCard'
-import { useState } from 'react'
 import { FaKitchenSet } from 'react-icons/fa6'
+import MealCard from './MealCard'
+import { useSelector } from 'react-redux'
 
-const MealGrid = ({ meals }) => {
-  const [currentPage, setCurrentPage] = useState(1)
-
-  const mealsPerPage = 8
-  const totalPages = Math.ceil(meals.length / mealsPerPage)
-
-  const indexOfLast = currentPage * mealsPerPage
-  const indexOfFirst = indexOfLast - mealsPerPage
-  const currentMeals = meals.slice(indexOfFirst, indexOfLast)
-
-  const handlePageChange = page => {
-    if (page >= 1 && page <= totalPages) setCurrentPage(page)
-  }
+const MealGrid = () => {
+  const { meals, filteredMeals } = useSelector(state => state.meals)
+  const displayedMeals = filteredMeals.length > 0 ? filteredMeals : meals
 
   return (
     <div className='mx-auto px-4 py-6 max-w-7xl'>
@@ -29,48 +18,13 @@ const MealGrid = ({ meals }) => {
           Explore our all meals this week
         </p>
       </div>
-      <div
-        id='explore'
-        className='gap-6 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-4'
-      >
-        {currentMeals.map(meal => (
+
+      {/* Meal Grid */}
+      <div className='gap-6 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-4'>
+        {displayedMeals.map(meal => (
           <MealCard key={meal.idMeal} meal={meal} />
         ))}
       </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className='flex justify-center space-x-2 mt-6'>
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className='flex justify-center items-center gap-1 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 px-3 py-1 rounded'
-          >
-            <FaArrowCircleLeft /> Prev
-          </button>
-
-          {[...Array(totalPages)].map((_, i) => (
-            <button
-              key={i + 1}
-              onClick={() => handlePageChange(i + 1)}
-              className={`px-3 py-1 rounded ${
-                currentPage === i + 1
-                  ? 'bg-cyan-800 text-white'
-                  : 'bg-gray-200 hover:bg-gray-300'
-              }`}
-            >
-              {i + 1}
-            </button>
-          ))}
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className='flex justify-center items-center gap-1 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 px-3 py-1 rounded'
-          >
-            Next <FaArrowCircleRight />
-          </button>
-        </div>
-      )}
     </div>
   )
 }

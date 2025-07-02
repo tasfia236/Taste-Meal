@@ -41,7 +41,7 @@ export default function FeaturedSlider ({ meals }) {
           <SwiperSlide key={meal.idMeal}>
             <div className='hover:scale-[1.03] transition-transform duration-300'>
               <div className='bg-gradient-to-br from-sky-500 via-sky-300 to-sky-500 shadow-lg p-[2px] rounded-2xl'>
-                <div className='bg-sky-200 backdrop-blur rounded-2xl h-[350px] overflow-hidden'>
+                <div className='bg-sky-200 backdrop-blur rounded-2xl h-[320px] overflow-hidden'>
                   <MealCard meal={meal} />
                 </div>
               </div>
